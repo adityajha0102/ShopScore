@@ -3,9 +3,11 @@ import logging
 import pandas as pd
 from zenml import step
 
+
 class IngestData:
     """Ingesting the data from the data_path"""
-    def __init__(self, data_path:str):
+
+    def __init__(self, data_path: str):
         """
         Args:
             data_path: path to the data
@@ -17,8 +19,9 @@ class IngestData:
         logging.info(f"Ingesting data from {self.data_path}")
         return pd.read_csv(self.data_path)
 
+
 @step
-def ingest_df(data_path:str) -> pd.DataFrame:
+def ingest_df(data_path: str) -> pd.DataFrame:
     """
     Ingesting the data from the data_path
 
@@ -34,4 +37,3 @@ def ingest_df(data_path:str) -> pd.DataFrame:
     except Exception as e:
         logging.error("Error while ingesting data: {e}")
         raise e
-
