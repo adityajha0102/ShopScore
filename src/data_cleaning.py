@@ -3,6 +3,8 @@ from typing import Tuple
 from abc import ABC, abstractmethod
 from collections import Counter
 from typing import Union
+
+import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, Normalizer, OneHotEncoder
@@ -16,7 +18,7 @@ class DataStrategy(ABC):
     """
 
     @abstractmethod
-    def handle_data(self, data: pd.DataFrame) -> Union[pd.DataFrame, pd.Series]:
+    def handle_data(self, data: pd.DataFrame) -> Union[pd.DataFrame, np.ndarray]:
         pass
 
 
@@ -214,7 +216,7 @@ class DataDivideStrategy(DataStrategy):
     Strategy to divide data into train and test
     """
 
-    def handle_data(self, data: pd.DataFrame) -> Union[pd.DataFrame, pd.Series]:
+    def handle_data(self, data: pd.DataFrame) -> Union[pd.DataFrame, np.ndarray]:
         try:
             # splitting data to train and test data
             X = data.drop('Score', axis=1)
@@ -222,7 +224,6 @@ class DataDivideStrategy(DataStrategy):
 
             X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=.15, stratify=Y, random_state=42)
             X_train_vec, X_test_vec = self.scale_data(X_train, X_test)
-
             return X_train_vec, X_test_vec, y_train, y_test
 
         except Exception as e:
@@ -340,6 +341,8 @@ class DataDivideStrategy(DataStrategy):
                                  payment_type_test, customer_state_test, seller_state_test, product_category_name_test,
                                  arrival_time_test, delivery_impression_test, estimated_del_impression_test,
                                  ship_impression_test, seller_popularity_test))
+            X_train_vec = pd.DataFrame(X_train_vec.toarray())
+            X_test_vec = pd.DataFrame(X_test_vec.toarray())
 
             return X_train_vec, X_test_vec
 
@@ -357,7 +360,7 @@ class DataCleaning:
         self.data = data
         self.strategy = strategy
 
-    def handle_data(self) -> Union[pd.DataFrame, pd.Series]:
+    def handle_data(self) -> Union[pd.DataFrame, np.ndarray]:
         """
         Handle Data
         """
@@ -382,8 +385,6 @@ if __name__ == "__main__":
         divide_strategy = DataDivideStrategy()
         data_cleaning = DataCleaning(feature_data, divide_strategy)
         X_train, X_test, y_train, y_test = data_cleaning.handle_data()
-        print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
-        print("Data Cleaning Completed")
         logging.info("Data Cleaning Completed")
 
     except Exception as e:
