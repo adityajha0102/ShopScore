@@ -10,8 +10,12 @@ from src.evaluation import AUC, ConfusionMatrix
 from src.evaluation import FScore, Accuracy
 from typing import Tuple
 from typing_extensions import Annotated
+from zenml.client import Client
 
-@step()
+experiment_tracker = Client().active_stack.experiment_tracker
+
+
+@step(experiment_tracker=experiment_tracker.name)
 def evaluate_model(model: ClassifierMixin,
                    X_train: pd.DataFrame,
                    X_test: pd.DataFrame,

@@ -3,14 +3,16 @@ import logging
 import mlflow
 import numpy as np
 import pandas as pd
-from zenml import step
+from zenml import step, client
 
 from src.model_dev import *
 from sklearn.base import ClassifierMixin
 from .config import ModelNameConfig
 from typing import Union
 
-@step()
+experiment_tracker = client.Client().active_stack.experiment_tracker
+
+@step(experiment_tracker = experiment_tracker.name)
 def train_model(X_train: pd.DataFrame,
                 y_train: np.ndarray,
                 config: ModelNameConfig,
