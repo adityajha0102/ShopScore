@@ -26,7 +26,7 @@ class Evaluation(ABC):
         pass
 
 
-'''class ConfusionMatrix(Evaluation):
+class ConfusionMatrix(Evaluation):
     """
     Evaluation strategy that uses Confusion Matrix
     """
@@ -40,9 +40,9 @@ class Evaluation(ABC):
         except Exception as e:
             logging.error("Error in calculating RMSE: {}".format(e))
             raise e
-'''
 
-'''class AUC_ROC(Evaluation):
+
+class AUC(Evaluation):
     """
     Evaluation strategy that uses AUC ROC
     """
@@ -56,21 +56,13 @@ class Evaluation(ABC):
             train_auc = round(auc(fpr_train, tpr_train), 3)
             test_auc = round(auc(fpr_test, tpr_test), 3)
 
-            plt.plot(fpr_train, tpr_train, color='red', label='train-auc = ' + str(train_auc))
-            plt.plot(fpr_test, tpr_test, color='blue', label='test-auc = ' + str(test_auc))
-            plt.plot(np.array([0, 1]), np.array([0, 1]), color='black', label='random model auc = ' + str(0.5))
-            plt.xlabel('False Positive Rate(FPR)')
-            plt.ylabel('True Positive Rate(TPR)')
-            plt.title('ROC curve')
-            plt.legend()
-
-            logging.info("ROC_AUC: {}".format(plt))
-            return plt
+            logging.info("AUC: {}".format(test_auc))
+            return test_auc
 
         except Exception as e:
             logging.error("Error in calculating ROC AUC: {}".format(e))
             raise e
-'''
+
 
 class FScore(Evaluation):
     """
