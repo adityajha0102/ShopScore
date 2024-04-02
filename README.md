@@ -85,7 +85,7 @@ Our standard training pipeline consists of several steps:
 
 ### Deployment Pipeline
 
-We have another pipeline, the `deployment_pipeline.py`, that extends the training pipeline, and implements a continuous deployment workflow. It ingests and processes input data, trains a model and then (re)deploys the prediction server that serves the model if it meets our evaluation criteria. The criteria that we have chosen is a configurable threshold on the [MSE](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_squared_error.html) of the training. The first four steps of the pipeline are the same as above, but we have added the following additional ones:
+We have another pipeline, the `deployment_pipeline.py`, that extends the training pipeline, and implements a continuous deployment workflow. It ingests and processes input data, trains a model and then (re)deploys the prediction server that serves the model if it meets our evaluation criteria. The criteria that we have chosen is a configurable threshold on the [Accuracy](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) of the training. The first four steps of the pipeline are the same as above, but we have added the following additional ones:
 
 - `deployment_trigger`: The step checks whether the newly trained model meets the criteria set for deployment.
 - `model_deployer`: This step deploys the model as a service using MLflow (if deployment criteria is met).
