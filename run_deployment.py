@@ -30,7 +30,7 @@ DEPLOY_AND_PREDICT = "deploy_and_predict"
 )
 @click.option(
     "--min-accuracy",
-    default=0.0,
+    default=50.0,
     help="Minimum accuracy required to deploy the model",
 )
 def run_deployment(config: str, min_accuracy: float):
